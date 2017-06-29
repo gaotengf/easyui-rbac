@@ -1,0 +1,103 @@
+.crm-menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.crm-menu li {
+	padding: 10px 10px;
+	cursor: pointer;
+}
+
+.crm-menu li.selected {
+	background: #E0ECFF;
+}
+
+.crm-menu li:HOVER {
+	background: #d8d8d8;
+}
+
+.crm-menu li:BEFORE {
+	font: normal normal normal 12px/1 FontAwesome;
+	content: "\f054";
+	padding-right: 5px;
+}
+
+.app-form {
+	padding: 10px;
+}
+
+.app-form .field {
+	margin-bottom: 20px
+}
+
+.ctr {
+	cursor: pointer;
+	margin-right: 10px;
+	font: normal normal normal 12px/1 FontAwesome;
+}
+
+.ctr:BEFORE {
+	padding-right: 2px;
+}
+
+.ctr-edit:BEFORE {
+	content: "\f044";
+}
+
+.ctr-delete:BEFORE {
+	content: "\f1f8";
+}
+
+.ctr:HOVER {
+	color: #f60;
+}
+
+.noflow {
+	overflow: hidden !important;
+}
+
+.l-btn-icon {
+	font-size: 16px;
+}
+
+.tree-icon {
+	font: normal normal normal 12px/1 FontAwesome;
+	font-size: 15px !important;
+	background: none;
+}
+
+.tree-folder:BEFORE {
+	content: "\f114";
+}
+
+.tree-folder-open:BEFORE {
+	content: "\f115";
+}
+
+.tree-file:BEFORE {
+	content: "\f0f6";
+}
+
+.toolbar-searcher {
+	float: right;
+}
+
+.panel-tool-a {
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.noborder {
+	border-top: none;
+}
+
+.user-info {
+	float: right;
+	line-height: 70px;
+}
+
+.user-info a {
+	color: #444;
+	text-decoration: none;
+}
