@@ -11,8 +11,11 @@ data.sql为初始化数据SQL脚本。
 
 首次启动后，会自动创建表。表建好后，再执行data.sql导入数据。
 
+本项目基于Spring Boot进行构建，如果你还不熟悉Spring Boot建议先移动这里先学习一下Spring Boot基本使用
+`https://bbs.jeasyuicn.com/thread-19.htm`
+
 #最后欢迎大家关注我的新论坛，多多支持
-https://bbs.jeasyuicn.com/
+`https://bbs.jeasyuicn.com/`
 
 ##### 项目截图
 
