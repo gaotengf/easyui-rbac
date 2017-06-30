@@ -1,7 +1,11 @@
 package cn.gson.crm.controller.system;
 
-import javax.validation.Valid;
-
+import cn.gson.crm.common.AjaxResult;
+import cn.gson.crm.common.DataGrid;
+import cn.gson.crm.model.dao.ResourceDao;
+import cn.gson.crm.model.domain.Resource;
+import cn.gson.crm.service.ResourceService;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,13 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
-
-import cn.gson.crm.common.AjaxResult;
-import cn.gson.crm.common.DataGrid;
-import cn.gson.crm.model.dao.ResourceDao;
-import cn.gson.crm.model.domain.Resource;
-import cn.gson.crm.service.ResourceService;
+import javax.validation.Valid;
 
 /**
  * 资源管理控制器
@@ -39,9 +37,8 @@ public class ResourceController {
 	ResourceService resourceService;
 
 	@RequestMapping
-	public String index() {
-		return "system/resource";
-	}
+    public void index() {
+    }
 
 	@RequestMapping("/list")
 	@ResponseBody
@@ -56,15 +53,14 @@ public class ResourceController {
 	}
 
 	@RequestMapping("form")
-	public String form(Long id, Model model) {
-		if (id != null) {
+    public void form(Long id, Model model) {
+        if (id != null) {
 			Resource resource = resourceDao.findOne(id);
 			model.addAttribute("resource", JSONObject.toJSONString(resource));
 			if(resource.getParent() != null){
 				model.addAttribute("parentId", resource.getParent().getId());
 			}
 		}
-		return "system/resource/form";
 	}
 
 	@RequestMapping({ "/save", "/update" })
