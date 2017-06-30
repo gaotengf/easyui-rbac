@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>CRM</title>
         <!-- 导入主题样式文件 -->
-        <link rel="stylesheet" href="/easyui/themes/default/easyui.css">
+        <link rel="stylesheet" href="/easyui/themes/gray/easyui.css">
         <!-- 图标 -->
         <link rel="stylesheet" href="/easyui/themes/icon.css">
         <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
@@ -48,8 +48,11 @@
 				</#list>
         		</div>
         </div>
-        <div data-options="region:'center',href:'/system/resource'">
+        <div data-options="region:'center',href:'/desktop'">
         
+        </div>
+        <div data-options="region:'south'" style="height:20px;text-align: center;line-height: 20px;overflow: hidden;">
+        Copyright © 2017 CRM学员管理系统 v1.0 Powered by  <a href="https://www.jeasyuicn.com">____′↘夏悸</a>
         </div>
     </body>
 </html>

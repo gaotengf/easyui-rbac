@@ -1,9 +1,12 @@
 package cn.gson.crm.model.domain;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +15,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import cn.gson.crm.model.enums.Gender;
+
+/**
+ * 员工
+ * @author ____′↘夏悸
+ *
+ */
 @Entity
 @Table(name = "crm_member")
 public class Member {
@@ -24,7 +36,26 @@ public class Member {
 	private String userName;
 
 	@Column(length = 128, nullable = false)
+	@JsonIgnore//json序列化的时候，忽略密码字段
 	private String password;
+	
+	@Column(length = 64, nullable = false)
+	private String  realName;
+	
+	@Column(length = 16)
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+	
+	@Column(length = 64)
+	private String  telephone;
+	
+	@Column(length = 128)
+	private String  email;
+	
+	/**
+	 * 入职时间
+	 */
+	private Date hiredate;
 
 	private Boolean status = true;
 
@@ -61,24 +92,67 @@ public class Member {
 		this.password = password;
 	}
 
-	public void setStatus(Boolean status) {
-		this.status = status;
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getHiredate() {
+		return hiredate;
+	}
+
+	public void setHiredate(Date hiredate) {
+		this.hiredate = hiredate;
 	}
 
 	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 	public List<Role> getRoles() {
 		return roles;
 	}
 
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", userName=" + userName + ", password=" + password + "]";
+		return "Member [id=" + id + ", userName=" + userName + ", password=" + password + ", realName=" + realName
+				+ ", gender=" + gender + ", telephone=" + telephone + ", email=" + email + ", hiredate=" + hiredate
+				+ ", status=" + status + "]";
 	}
+	
 }

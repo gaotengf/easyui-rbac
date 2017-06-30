@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alibaba.fastjson.JSONArray;
 
@@ -58,7 +59,7 @@ public class AppController {
 	public String login() {
 		return "login";
 	}
-	
+
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -79,36 +80,36 @@ public class AppController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String doLoin(String userName,String password,HttpSession session) {
-		//参数校验
-		if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)){
+	public String doLoin(String userName, String password, RedirectAttributes rAttributes, HttpSession session) {
+		// 参数校验
+		if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+			rAttributes.addFlashAttribute("error", "参数错误！");
 			return "redirect:/login";
 		}
-		
+
 		Member member = memberDao.findByUserName(userName);
 
-		//校验密码
-		if(member == null 
-				|| !member.getPassword().equals(DigestUtils.sha256Hex(password))
-				|| !member.getStatus()){
+		// 校验密码
+		if (member == null || !member.getPassword().equals(DigestUtils.sha256Hex(password)) || !member.getStatus()) {
+			rAttributes.addFlashAttribute("error", "用户名或密码错误！");
 			return "redirect:/login";
 		}
-		
+
 		// 获取用户可用菜单,所有有权限的请求，所有资源key
 		List<Role> roles = member.getRoles();
 
 		List<Resource> menus = new ArrayList<Resource>();
 		Set<String> urls = new HashSet<>();
 		Set<String> resourceKey = new HashSet<>();
-		//是否是管理员
+		// 是否是管理员
 		session.setAttribute("isSuper", superUserId == member.getId());
-		
+
 		allResources.clear();
-		
+
 		if (superUserId == member.getId()) {
-			//超级管理员，直接获取所有权限资源
+			// 超级管理员，直接获取所有权限资源
 			allResources = resourceDao.findByStatus(true, new Sort(Direction.DESC, "weight"));
-		}else{
+		} else {
 			// forEach 1.8jdk才支持
 			roles.forEach(new Consumer<Role>() {
 				@Override
@@ -117,7 +118,7 @@ public class AppController {
 				}
 			});
 		}
-		
+
 		allResources.forEach(new Consumer<Resource>() {
 
 			@Override
@@ -153,4 +154,22 @@ public class AppController {
 		return "redirect:/";
 	}
 
+	/**
+	 * 首页
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/desktop")
+	public String desktop() {
+		return "desktop";
+	}
+	
+	/**
+	 * 请求权限被拒绝的提醒页面
+	 * @return
+	 */
+	@RequestMapping("/reject")
+	public String reject() {
+		return "reject";
+	}
 }

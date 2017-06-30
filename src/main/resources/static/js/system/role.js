@@ -14,7 +14,7 @@ $(function() {
 		idField : "id",
 		fit : true,
 		rownumbers : true,
-		singleSelect : true,
+		ignore:['resource'],
 		fitColumns : true,
 		border : false,
 		columns : [ [ {
@@ -56,38 +56,36 @@ $(function() {
 		toolbar : authToolBar({
 			"role-create" : {
 				iconCls : 'fa fa-plus-square',
-				text : "创建角色",
+				text : "创建",
 				handler : function() {
 					dg.edatagrid('addRow');
 				}
 			},
-			"role-delete" : {
-				iconCls : 'fa fa-trash',
-				text : "删除角色",
-				handler : function() {
-					dg.edatagrid('destroyRow');
-				}
-			},
 			"role-save" : {
 				iconCls : 'fa fa-save',
-				text : "保存编辑",
+				text : "保存",
 				handler : function() {
 					dg.edatagrid('saveRow');
 				}
 			},
-			"role-cancel" : {
-				iconCls : 'fa fa-mail-reply',
-				text : "取消编辑",
+			"role-delete" : {
+				iconCls : 'fa fa-trash',
+				text : "删除",
 				handler : function() {
-					dg.edatagrid('cancelRow');
+					dg.edatagrid('destroyRow');
 				}
-			},
-			"role-reolad" : {
-				iconCls : 'fa fa-refresh',
-				text : "刷新",
-				handler : function() {
-					dg.edatagrid('reload');
-				}
+			}
+		},{
+			iconCls : 'fa fa-mail-reply',
+			text : "取消",
+			handler : function() {
+				dg.edatagrid('cancelRow');
+			}
+		},{
+			iconCls : 'fa fa-refresh',
+			text : "刷新",
+			handler : function() {
+				dg.edatagrid('reload');
 			}
 		}),
 		onError : function(index, data) {

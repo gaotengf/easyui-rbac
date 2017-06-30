@@ -63,6 +63,7 @@ public class RoleController {
 			logger.error("对象校验失败：" + br.getAllErrors());
 			return new AjaxResult(false).setData(br.getAllErrors());
 		} else {
+			role.setResource(null);
 			return roleDao.save(role);
 		}
 	}

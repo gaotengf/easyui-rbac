@@ -64,6 +64,16 @@ public class MemberController {
 			logger.error("对象校验失败：" + br.getAllErrors());
 			return new AjaxResult(false).setData(br.getAllErrors());
 		} else {
+			if(member.getId() != null){
+				//不在这里更新角色和密码
+				Member orig = memberDao.findOne(member.getId());
+				//理论上这里一定是要找得到对象的
+				if(orig != null){
+					member.setPassword(orig.getPassword());
+					member.setRoles(orig.getRoles());
+				}
+			}
+			
 			return memberDao.save(member);
 		}
 	}

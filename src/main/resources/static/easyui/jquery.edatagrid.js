@@ -12,13 +12,6 @@
  * 
  */
 (function($){
-	// var oldLoadDataMethod = $.fn.datagrid.methods.loadData;
-	// $.fn.datagrid.methods.loadData = function(jq, data){
-	// 	jq.each(function(){
-	// 		$.data(this, 'datagrid').filterSource = null;
-	// 	});
-	// 	return oldLoadDataMethod.call($.fn.datagrid.methods, jq, data);
-	// };
 
 	var autoGrids = [];
 	function checkAutoGrid(){
@@ -75,10 +68,6 @@
 				}
 			},
 			onClickCell:function(index,field,value){
-				// if (opts.editing && opts.editIndex >= 0){
-				// 	$(this).edatagrid('editRow', index);
-				// 	focusEditor(target, field);
-				// }
 				if (opts.editIndex >= 0){
 					var dg = $(this);
 					if (opts.editing){
@@ -119,6 +108,11 @@
 							changed = true;
 							break;
 						}
+					}
+					if(opts.ignore){
+						$.each(opts.ignore,function(){
+							delete row[this];
+						});
 					}
 					if (changed){
 						opts.poster.call(target, url, row, function(data){
@@ -472,12 +466,12 @@
 		editIndex: -1,
 		destroyMsg:{
 			norecord:{
-				title:'Warning',
-				msg:'No record is selected.'
+				title:'系统提示',
+				msg:'没有选择记录.'
 			},
 			confirm:{
-				title:'Confirm',
-				msg:'Are you sure you want to delete?'
+				title:'系统提示',
+				msg:'确认删除?'
 			}
 		},
 		poster: function(url, data, success, error){

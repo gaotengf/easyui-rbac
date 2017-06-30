@@ -2,7 +2,6 @@ package cn.gson.crm.model.domain;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +20,7 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToMany(targetEntity=Resource.class,cascade=CascadeType.ALL)
+	@ManyToMany(targetEntity=Resource.class)
 	@JoinTable(name="crm_role_resource",
 	joinColumns={
 			@JoinColumn(name="role_id")

@@ -44,8 +44,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 				response.setStatus(401);
 			} else {
 				response.setContentType("text/html;charset=utf-8");
-				// 非ajax请求，没有权限，重定向到提示页面
-				response.sendRedirect("/reject");
+				// 非ajax请求，没有权限，转到提示页面
+				request.getRequestDispatcher("/reject").forward(request, response);
 			}
 			// 没有权限
 			return false;

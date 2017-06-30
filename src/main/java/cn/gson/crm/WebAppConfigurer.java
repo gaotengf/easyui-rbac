@@ -20,7 +20,7 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
 		// 注册登录拦截器
 		InterceptorRegistration loginReg = registry.addInterceptor(new LoginInterceptor());
 		loginReg.addPathPatterns("/**");
-		loginReg.excludePathPatterns("/login");
+		loginReg.excludePathPatterns("/login","/error");
 
 		// 注册权限拦截器
 		InterceptorRegistration authReg = registry.addInterceptor(new AuthInterceptor());

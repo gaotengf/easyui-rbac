@@ -13,6 +13,11 @@
 				toolbars.push(btn);
 			}
 		});
+		if(arguments.length > 1){
+			for(var i = 1;i < arguments.length; i++){
+				toolbars.push(arguments[i])
+			}
+		}
 		return toolbars;
 	}
 	w.authToolBar = authToolBar;
