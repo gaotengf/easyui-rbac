@@ -16,14 +16,16 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.Predicate;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * 用户管理控制器
@@ -50,15 +52,24 @@ public class MemberController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public DataGrid<Member> list(int page, int rows, String userName) {
+    public DataGrid<Member> list(int page, int rows, String userName, String realName, String telephone) {
         PageRequest pr = new PageRequest(page - 1, rows, Direction.DESC, "id");
-        Page<Member> pageData;
+        Page pageData = memberDao.findAll((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
 
-        if (StringUtils.isEmpty(userName)) {
-            pageData = memberDao.findAll(pr);
-        } else {
-            pageData = memberDao.findByUserNameLike(pr, "%" + userName + "%");
-        }
+            if (isNotEmpty(userName)) {
+                predicates.add(cb.like(root.get("userName"), "%" + userName + "%"));
+            }
+            if (isNotEmpty(realName)) {
+                predicates.add(cb.like(root.get("realName"), "%" + realName + "%"));
+            }
+            if (isNotEmpty(telephone)) {
+                predicates.add(cb.equal(root.get("userName"), telephone));
+            }
+
+            query.where(predicates.toArray(new Predicate[0]));
+            return null;
+        }, pr);
 
         return new DataGrid<>(pageData);
 
@@ -75,7 +86,7 @@ public class MemberController {
     @RequestMapping("/check")
     @ResponseBody
     public boolean check(String userName) {
-        return memberDao.findByUserName(userName) == null;
+        return memberDao.countByUserName(userName) == 0;
     }
 
     @RequestMapping("/roles")

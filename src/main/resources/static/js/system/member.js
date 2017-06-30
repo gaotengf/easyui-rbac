@@ -1,6 +1,6 @@
 $(function () {
   var dg = $("#member_dg");
-  var searcherTpl = $("#member_searcher_tpl");
+  var searchFrom = $("#member_search_from");
   var form;
 
   // 使用edatagrid，需要而外导入edatagrid扩展
@@ -141,27 +141,30 @@ $(function () {
         handler: function () {
           createForm()
         }
+      },
+      "member-reset-password": {
+        iconCls: 'fa fa-repeat',
+        text: "重置密码",
+        handler: function () {
+          var row = dg.datagrid('getSelected');
+          if (row) {
+            $.messager.confirm('系统提示', '确定将【' + row.realName + "】的密码重置为：0000", function (r) {
+              if (r) {
+                $.get("/system/member/password/reset", {id: row.id}, function (rsp) {
+                  $.messager.alert("系统提示", "密码重置成功！");
+                })
+              }
+            })
+          }
+        }
       }
     })
   });
 
-  var toolbar = dg.datagrid("getPanel").find('.datagrid-toolbar');
 
-  toolbar.prepend(searcherTpl.html());
-
-  $("#member_searcher").searchbox({
-    searcher: function (value, name) {
-      if (value) {
-        dg.datagrid("load", {
-          userName: value
-        })
-      } else {
-        dg.datagrid("load", {})
-      }
-    },
-    prompt: '请输入用户名'
-  });
-
+  /**
+   * 操作按钮绑定事件
+   */
   dg.datagrid("getPanel").on('click', "a.ctr-edit", function () {// 编辑按钮事件
     createForm.call(this, this.dataset.id)
   }).on('click', "a.ctr-delete", function () {// 删除按钮事件
@@ -170,11 +173,22 @@ $(function () {
       if (r) {
         $.get("/system/member/delete", {id: id}, function () {
           // 数据操作成功后，对列表数据，进行刷新
-          dg.treegrid("reload");
+          dg.datagrid("reload");
         });
       }
     });
   });
+
+  /**
+   * 搜索区域事件
+   */
+  searchFrom.on('click', 'a.searcher', function () {//检索
+    dg.datagrid('load', searchFrom.formToJson());
+  }).on('click', 'a.reset', function () {//重置
+    searchFrom.form('reset');
+    dg.datagrid('load', {});
+  });
+
 
   /**
    * 创建表单窗口
@@ -185,9 +199,8 @@ $(function () {
     var dialog = $("<div/>", {class: 'noflow'}).dialog({
       title: (id ? "编辑" : "创建") + "用户",
       iconCls: 'fa ' + (id ? "fa-edit" : "fa-plus-square"),
-      height: 440,
+      height: id ? 380 : 420,
       width: 420,
-      resizable: true,
       href: '/system/member/form',
       queryParams: {
         id: id

@@ -99,7 +99,6 @@ $(function () {
       iconCls: 'fa ' + (id ? "fa-edit" : "fa-plus-square"),
       height: 480,
       width: 420,
-      resizable: true,
       href: '/system/resource/form',
       queryParams: {
         id: id

@@ -52,7 +52,7 @@ public class RoleController {
     }
 
     @RequestMapping({"/save", "/update"})
-    @Transactional(readOnly = false)
+    @Transactional
     @ResponseBody
     public Object save(@Valid Role role, BindingResult br) {
         if (br.hasErrors()) {
@@ -65,7 +65,7 @@ public class RoleController {
     }
 
     @RequestMapping("/delete")
-    @Transactional(readOnly = false)
+    @Transactional
     @ResponseBody
     public AjaxResult delete(Long id) {
         try {
@@ -90,7 +90,7 @@ public class RoleController {
      * @return
      */
     @RequestMapping("/resource/save")
-    @Transactional(readOnly = false)
+    @Transactional
     @ResponseBody
     public AjaxResult resourceSave(Long roleId, Long[] resourceId) {
         Role role = roleDao.findOne(roleId);

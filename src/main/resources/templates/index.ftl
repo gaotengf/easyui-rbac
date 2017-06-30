@@ -27,7 +27,9 @@
 <body class="easyui-layout">
 <div data-options="region:'north'" style="height: 70px;overflow: hidden;padding: 0 10px;">
   <div class="user-info">
-    <a href="/logout"><i class="fa fa-sign-out"></i> 注销</a>
+    <span class="item" id="public_change_info"><i class="fa fa-user"></i> ${s_member.realName}</span>
+    <span class="item" id="public_change_password"><i class="fa fa-user"></i> 修改密码</span>
+    <a class="item" href="/logout"><i class="fa fa-sign-out"></i> 注销</a>
   </div>
   <h1>CRM学员管理系统</h1>
 </div>

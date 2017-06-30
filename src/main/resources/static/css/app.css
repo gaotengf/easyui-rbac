@@ -115,3 +115,25 @@ a:HOVER {
   color: #444;
   text-decoration: none;
 }
+
+.user-info .item {
+  cursor: pointer;
+}
+
+.user-info .item:hover {
+  color: #ff6600;
+}
+
+.user-info .item:after {
+  content: " | ";
+  padding: 0 5px;
+}
+
+.user-info .item:last-child:after {
+  content: normal;
+}
+
+.searcher-form .field {
+  width: 170px;
+  height: 30px;
+}
