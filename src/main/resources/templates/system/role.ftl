@@ -12,4 +12,3 @@
 		</#if>
 	</div>
 </div>
-<script src="/js/system/role.js" ></script>

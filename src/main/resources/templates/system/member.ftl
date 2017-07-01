@@ -12,5 +12,3 @@
     <table id="member_dg"></table>
   </div>
 </div>
-
-<script src="/js/system/member.js"></script>

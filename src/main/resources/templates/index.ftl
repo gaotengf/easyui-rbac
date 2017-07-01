@@ -21,8 +21,8 @@
   <!-- Easyui的bug修复包 -->
   <script src="/easyui/fixed.js" charset="utf-8"></script>
   <script src="/resource" charset="utf-8"></script>
-  <!-- 项目资源 -->
-  <script src="/js/app.js" charset="utf-8"></script>
+
+  <script src="/js/require.js" charset="utf-8" data-main="js/app" defer async="true"></script>
 </head>
 <body class="easyui-layout">
 <div data-options="region:'north'" style="height: 70px;overflow: hidden;padding: 0 10px;">

@@ -17,11 +17,19 @@ $(function () {
     }
   });
 
+  var center = $("body").layout("panel", "center");
+
+  center.panel('options').onLoad = function () {
+    require([center.panel('options').href.substring(1)], function (model) {
+      model && model(center);
+    });
+  };
+
   // 绑定菜单事件
   $(".crm-menu").on('click', 'li', function () {
     if (!$(this).hasClass('selected')) {
       // 获取center对应的panel对象
-      var center = $("body").layout("panel", "center");
+
       // 刷新center区域
       center.panel("refresh", this.dataset.url);
       // 选中状态
