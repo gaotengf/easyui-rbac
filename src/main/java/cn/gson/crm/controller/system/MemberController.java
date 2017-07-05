@@ -119,7 +119,9 @@ public class MemberController {
             if (roles != null && roles.length > 1) {
                 List<Role> rolesList = new ArrayList<>();
                 for (Long rid : roles) {
-                    rolesList.add(roleDao.findOne(rid));
+                    if (rid != null) {
+                        rolesList.add(roleDao.findOne(rid));
+                    }
                 }
                 member.setRoles(rolesList);
             }
