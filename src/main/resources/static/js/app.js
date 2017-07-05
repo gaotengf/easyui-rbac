@@ -110,6 +110,116 @@ $(function () {
   });
 
   /**
+   * 聊天部分
+   */
+  (function () {
+    var vm = new Vue({
+      el: '#footer',
+      data: {
+        onlineUser: []
+      },
+      computed: {
+        online: function () {
+          return this.onlineUser.length;
+        }
+      },
+      methods: {
+        pushUser: function (user) {
+          this.onlineUser.push(user);
+        },
+        removeUser: function (user) {
+          var index = $("#user" + user.uid).attr('index');
+          this.onlineUser.splice(index, 1);
+        },
+        sendMsg: function (user, uid) {
+          if (user.uid != uid) {
+            $.messager.prompt(user.realName, '请输入消息内容：', function (r) {
+              if (r) {
+                $.get('/im/send', {uid: user.uid, content: r});
+              }
+            });
+          }
+        }
+      }
+    });
+
+    var websocket = null;
+    if ('WebSocket' in window) {
+      websocket = new WebSocket("ws://" + location.host + "/ws/server");
+    }
+    else if ('MozWebSocket' in window) {
+      websocket = new MozWebSocket("ws://" + location.host + "/ws/server");
+    }
+    else {
+      websocket = new SockJS("http://" + location.host + "/sockjs/server");
+    }
+    websocket.onopen = onOpen;
+    websocket.onmessage = onMessage;
+    websocket.onerror = onError;
+
+    function onOpen(openEvt) {
+      $.get("/im/user/list").success(function (rsp) {
+        Vue.set(vm, 'onlineUser', rsp.data);
+      });
+    }
+
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      switch (data.tag) {
+        case 'online':
+          vm.pushUser(data.data);
+          $.messager.show({
+            title: '上线提示',
+            msg: data.data.realName + '已上线',
+            timeout: 2000,
+            showType: 'slide'
+          });
+          break;
+        case 'offline':
+          vm.removeUser(data.data);
+          $.messager.show({
+            title: '下线提示',
+            msg: data.data.realName + '已下线',
+            timeout: 2000,
+            showType: 'slide'
+          });
+          break;
+        case 'logout':
+          websocket.close();
+          $.messager.alert("系统提醒", "您的账号已经在其他地方登陆！", "info", function () {
+            location.href = '/logout';
+          });
+          break;
+        case 'message':
+          $.messager.show({
+            title: data.data.realName + '给你发来消息',
+            msg: data.data.message,
+            timeout: 4000,
+            showType: 'slide'
+          });
+          break;
+      }
+    }
+
+    function onError() {
+      alert("网络异常！请刷新！");
+    }
+
+    window.close = function () {
+      if (!websocket.CLOSED)
+        websocket.close();
+    };
+
+    $("#online").on('click', function () {
+      $("#online_list").toggle()
+    });
+
+    $("#online_list").on('click', ".online-list-header .fa-close", function () {
+      $("#online_list").hide();
+    });
+  })();
+
+  /**
    * 扩展一个jq组件，获取一个json格式的表单值
    * @param ignoreNull 是否排除空值
    * @returns {*}

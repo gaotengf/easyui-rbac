@@ -98,8 +98,10 @@ public class RoleController {
             try {
                 role.setResource(new ArrayList<>());
                 for (Long rid : resourceId) {
-                    // 将资源关联到角色
-                    role.getResource().add(resourceDao.findOne(rid));
+                    if (rid != null) {
+                        // 将资源关联到角色
+                        role.getResource().add(resourceDao.findOne(rid));
+                    }
                 }
                 roleDao.save(role);
                 return new AjaxResult();

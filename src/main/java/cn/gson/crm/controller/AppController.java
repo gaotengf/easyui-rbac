@@ -1,6 +1,9 @@
 package cn.gson.crm.controller;
 
 import cn.gson.crm.common.AjaxResult;
+import cn.gson.crm.common.Constants;
+import cn.gson.crm.common.SocketMessage;
+import cn.gson.crm.handler.WebSocketHandler;
 import cn.gson.crm.model.dao.MemberDao;
 import cn.gson.crm.model.dao.ResourceDao;
 import cn.gson.crm.model.domain.Member;
@@ -28,8 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * 系统的入口控制器，入口控制器里面的请求，理论上都受权限控制
@@ -43,6 +46,9 @@ public class AppController {
 
     @Autowired
     ResourceDao resourceDao;
+
+    @Autowired
+    WebSocketHandler webSocketHandler;
 
     /**
      * 超级管理员id
@@ -98,6 +104,12 @@ public class AppController {
             return "redirect:/login";
         }
 
+        if (webSocketHandler.isOnline(member.getId())) {
+            //通知下线
+            webSocketHandler.sendMessageToUser(member.getId(), new SocketMessage("logout", "").toTextMessage());
+            webSocketHandler.offLine(member.getId());
+        }
+
         final List<Resource> allResources;
 
         // 获取用户可用菜单,所有有权限的请求，所有资源key
@@ -124,13 +136,13 @@ public class AppController {
             }
 
             //所有请求资源
-            if (isNoneEmpty(t.getMenuUrl())) {
+            if (isNotEmpty(t.getMenuUrl())) {
                 urls.add(t.getMenuUrl());
             }
 
             String[] funUrls = t.getFunUrls().split(",");
             for (String url : funUrls) {
-                if (isNoneEmpty(url)) {
+                if (isNotEmpty(url)) {
                     urls.add(url);
                 }
             }
@@ -143,7 +155,7 @@ public class AppController {
         session.setAttribute("menus", menus);
         session.setAttribute("urls", urls);
         session.setAttribute("resourceKey", resourceKey);
-        session.setAttribute("s_member", member);
+        session.setAttribute(Constants.SESSION_MEMBER_KEY, member);
         // 是否是管理员
         session.setAttribute("isSuper", superUserId == member.getId());
         return "redirect:/";

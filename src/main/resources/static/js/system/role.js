@@ -109,9 +109,7 @@ define(function () {
             var node = resourceTree.tree('find', this.id);
 
             // 判断叶子节点才执行check方法
-            if (node && resourceTree.tree('isLeaf', node.target)) {
-              resourceTree.tree('check', node.target);
-            }
+            resourceTree.tree('check', node.target);
           });
         }
       }
@@ -120,7 +118,8 @@ define(function () {
     //实例化权限树
     resourceTree.tree({
       url: "/system/role/resource/tree",
-      checkbox: true
+      checkbox: true,
+      cascadeCheck: false
     });
 
     $("#role-resource-save").on("click", function () {

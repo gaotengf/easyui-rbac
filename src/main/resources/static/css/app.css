@@ -137,3 +137,86 @@ a:HOVER {
   width: 170px;
   height: 30px;
 }
+
+.online {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+}
+
+.online-list {
+  position: fixed;
+  bottom: 22px;
+  right: 0;
+  height: 520px;
+  width: 260px;
+  z-index: 10;
+  color: #333;
+  background: rgba(255, 255, 255, 0.9);
+  font-family: \5FAE\8F6F\96C5\9ED1;
+  -webkit-background-clip: content;
+  box-shadow: 1px 1px 30px rgba(0, 0, 0, .3);
+  animation-name: layer-fadeInUpBig;
+  animation-fill-mode: both;
+  animation-duration: .3s;
+  display: none;
+}
+
+.online-list-header {
+  padding: 10px;
+  background: #e2e2e2;
+}
+
+.online-list-header .fa-close {
+  float: right;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.online-list-header .fa-close:hover {
+  transform: rotate(180deg);
+  color: #ff6600;
+}
+
+@keyframes layer-fadeInUpBig {
+  0% {
+    opacity: 0;
+    transform: translateY(2000px)
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+.online-list-users ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.online-list-users ul li {
+  padding: 10px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.online-list-users ul li:hover {
+  background-color: rgba(0, 0, 0, .05);
+}
+
+.online-list-users .online-user-avator {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  border: 1px solid #343434;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.online-list-users .online-user-avator i {
+  vertical-align: middle;
+  font-size: 28px;
+}

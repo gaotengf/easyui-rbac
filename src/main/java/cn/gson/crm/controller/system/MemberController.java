@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -25,7 +26,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * 用户管理控制器
@@ -44,6 +45,12 @@ public class MemberController {
 
     @Autowired
     RoleDao roleDao;
+
+    /**
+     * 超级管理员id
+     */
+    @Value("${crm.system.super-user-id}")
+    Long superUserId;
 
     @RequestMapping
     public void index() {
@@ -119,7 +126,9 @@ public class MemberController {
             if (roles != null && roles.length > 1) {
                 List<Role> rolesList = new ArrayList<>();
                 for (Long rid : roles) {
-                    rolesList.add(roleDao.findOne(rid));
+                    if (rid != null) {
+                        rolesList.add(roleDao.findOne(rid));
+                    }
                 }
                 member.setRoles(rolesList);
             }
@@ -151,7 +160,11 @@ public class MemberController {
     @ResponseBody
     public AjaxResult delete(Long id) {
         try {
-            memberDao.delete(id);
+            if (superUserId != id) {
+                memberDao.delete(id);
+            } else {
+                return new AjaxResult(false, "管理员不能删除！");
+            }
         } catch (Exception e) {
             return new AjaxResult(false).setMessage(e.getMessage());
         }

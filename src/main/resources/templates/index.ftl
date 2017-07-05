@@ -20,7 +20,13 @@
   <script src="/easyui/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
   <!-- Easyui的bug修复包 -->
   <script src="/easyui/fixed.js" charset="utf-8"></script>
+
+  <!--权限资源-->
   <script src="/resource" charset="utf-8"></script>
+
+  <!--webSocket的支持-->
+  <script src="/js/lib/sockjs.min.js" charset="utf-8"></script>
+  <script src="/js/lib/vue.js" charset="utf-8"></script>
 
   <script src="/js/require.js" charset="utf-8" data-main="js/app" defer async="true"></script>
 </head>
@@ -53,8 +59,28 @@
 <div data-options="region:'center',href:'/desktop'">
 
 </div>
-<div data-options="region:'south'" style="height:20px;text-align: center;line-height: 20px;overflow: hidden;">
+<div id="footer" data-options="region:'south'" style="height:20px;text-align: center;line-height: 20px;overflow: hidden;">
+  <div id="online" class="online">
+    当前在线人数：<span v-text="online"></span>
+  </div>
   Copyright © 2017 CRM学员管理系统 v1.0 Powered by <a href="https://www.jeasyuicn.com">____′↘夏悸</a>
+
+  <div id="online_list" class="online-list">
+    <div class="online-list-header">
+      <i class="fa fa-close"></i>
+      <span>${s_member.realName}</span>
+    </div>
+    <div class="online-list-users">
+      <ul>
+        <li v-for="(user,i) in onlineUser" :id="'user'+user.uid" :key="user" :index="i" @click="sendMsg(user,${s_member.id})">
+          <span class="online-user-avator">
+            <i class="fa fa-user"></i>
+          </span>
+          <span v-text="user.realName"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 </body>
 </html>
