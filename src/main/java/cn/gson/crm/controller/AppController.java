@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
+import static cn.gson.crm.common.Constants.SESSION_MEMBER_KEY;
 import static cn.gson.crm.common.Constants.SESSION_VERIFY_CODE_KEY;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
@@ -68,7 +69,10 @@ public class AppController {
     }
 
     @RequestMapping("/login")
-    public String login() {
+    public String login(HttpSession session) {
+        if (session.getAttribute(SESSION_MEMBER_KEY) != null) {
+            return "redirect:/";
+        }
         return "login";
     }
 
