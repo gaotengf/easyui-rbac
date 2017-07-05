@@ -22,6 +22,10 @@ data.sql为初始化数据SQL脚本。
 
 http://git.oschina.net/gson/easyui-rbac/tree/feature/senior/
 
+#### 案例在线演示：
+
+[案例在线演示](http://crud.jeasyuicn.com/)
+
 ##### 项目截图
 
 ![输入图片说明](https://git.oschina.net/uploads/images/2017/0629/172822_51c49f23_82.jpeg "在这里输入图片标题")
