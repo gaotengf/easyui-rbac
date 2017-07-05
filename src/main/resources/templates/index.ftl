@@ -20,12 +20,14 @@
   <script src="/easyui/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
   <!-- Easyui的bug修复包 -->
   <script src="/easyui/fixed.js" charset="utf-8"></script>
+  <script src="/js/lib/xss.js" charset="utf-8"></script>
 
   <!--权限资源-->
   <script src="/resource" charset="utf-8"></script>
 
   <!--webSocket的支持-->
   <script src="/js/lib/sockjs.min.js" charset="utf-8"></script>
+
   <script src="/js/lib/vue.js" charset="utf-8"></script>
 
   <script>

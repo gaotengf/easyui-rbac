@@ -26,6 +26,9 @@ define(function () {
           options: {
             required: true
           }
+        },
+        formatter: function (val) {
+          return filterXSS(val);
         }
       }, {
         field: 'gender',
@@ -63,6 +66,9 @@ define(function () {
             required: true,
             validType: 'userName'
           }
+        },
+        formatter: function (val) {
+          return filterXSS(val);
         }
       }, {
         field: 'telephone',

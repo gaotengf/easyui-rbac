@@ -125,7 +125,6 @@ $(function () {
       },
       methods: {
         pushUser: function (user) {
-          this.removeUser(user);
           this.onlineUser.push(user);
         },
         removeUser: function (user) {
@@ -134,7 +133,7 @@ $(function () {
         },
         sendMsg: function (user, uid) {
           if (user.uid != uid) {
-            $.messager.prompt(user.realName, '请输入消息内容：', function (r) {
+            $.messager.prompt(filterXSS(user.realName), '请输入消息内容：', function (r) {
               if (r) {
                 $.post('/im/send', {uid: user.uid, content: r});
               }
@@ -172,7 +171,7 @@ $(function () {
           if (MEMBER.id != data.data.uid) {
             $.messager.show({
               title: '上线提示',
-              msg: data.data.realName + '已上线',
+              msg: filterXSS(data.data.realName) + '已上线',
               timeout: 2000,
               showType: 'slide'
             });
@@ -182,7 +181,7 @@ $(function () {
           vm.removeUser(data.data);
           $.messager.show({
             title: '下线提示',
-            msg: data.data.realName + '已下线',
+            msg: filterXSS(data.data.realName) + '已下线',
             timeout: 2000,
             showType: 'slide'
           });
@@ -195,8 +194,8 @@ $(function () {
           break;
         case 'message':
           $.messager.show({
-            title: data.data.realName + '给你发来消息',
-            msg: data.data.message,
+            title: filterXSS(data.data.realName) + '给你发来消息',
+            msg: filterXSS(data.data.message),
             timeout: 4000,
             showType: 'slide'
           });
