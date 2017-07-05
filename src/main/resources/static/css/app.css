@@ -160,11 +160,13 @@ a:HOVER {
   animation-fill-mode: both;
   animation-duration: .3s;
   display: none;
+  overflow-y: auto;
 }
 
 .online-list-header {
   padding: 10px;
   background: #e2e2e2;
+  text-align: left;
 }
 
 .online-list-header .fa-close {

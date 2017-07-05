@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>CRM</title>
+  <title>CRM学员管理系统</title>
   <!-- 导入主题样式文件 -->
   <link rel="stylesheet" href="/easyui/themes/gray/easyui.css">
   <!-- 图标 -->
@@ -28,6 +28,13 @@
   <script src="/js/lib/sockjs.min.js" charset="utf-8"></script>
   <script src="/js/lib/vue.js" charset="utf-8"></script>
 
+  <script>
+    var MEMBER = {
+      id:${s_member.id},
+      realName: '${s_member.realName}',
+      userName: '${s_member.userName}'
+    };
+  </script>
   <script src="/js/require.js" charset="utf-8" data-main="js/app" defer async="true"></script>
 </head>
 <body class="easyui-layout">
@@ -68,7 +75,7 @@
   <div id="online_list" class="online-list">
     <div class="online-list-header">
       <i class="fa fa-close"></i>
-      <span>${s_member.realName}</span>
+      <span>系统在线用户</span>
     </div>
     <div class="online-list-users">
       <ul>

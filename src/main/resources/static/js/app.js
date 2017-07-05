@@ -125,6 +125,7 @@ $(function () {
       },
       methods: {
         pushUser: function (user) {
+          this.removeUser(user);
           this.onlineUser.push(user);
         },
         removeUser: function (user) {
@@ -135,7 +136,7 @@ $(function () {
           if (user.uid != uid) {
             $.messager.prompt(user.realName, '请输入消息内容：', function (r) {
               if (r) {
-                $.get('/im/send', {uid: user.uid, content: r});
+                $.post('/im/send', {uid: user.uid, content: r});
               }
             });
           }
@@ -168,12 +169,14 @@ $(function () {
       switch (data.tag) {
         case 'online':
           vm.pushUser(data.data);
-          $.messager.show({
-            title: '上线提示',
-            msg: data.data.realName + '已上线',
-            timeout: 2000,
-            showType: 'slide'
-          });
+          if (MEMBER.id != data.data.uid) {
+            $.messager.show({
+              title: '上线提示',
+              msg: data.data.realName + '已上线',
+              timeout: 2000,
+              showType: 'slide'
+            });
+          }
           break;
         case 'offline':
           vm.removeUser(data.data);

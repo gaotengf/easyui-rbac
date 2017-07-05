@@ -3,12 +3,15 @@ package cn.gson.crm.controller;
 import cn.gson.crm.common.AjaxResult;
 import cn.gson.crm.common.Constants;
 import cn.gson.crm.common.SocketMessage;
+import cn.gson.crm.common.VerifyCodeUtils;
 import cn.gson.crm.handler.WebSocketHandler;
 import cn.gson.crm.model.dao.MemberDao;
 import cn.gson.crm.model.dao.ResourceDao;
+import cn.gson.crm.model.dao.RoleDao;
 import cn.gson.crm.model.domain.Member;
 import cn.gson.crm.model.domain.Resource;
 import cn.gson.crm.model.domain.Role;
+import cn.gson.crm.model.enums.Gender;
 import cn.gson.crm.model.enums.ResourceType;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -25,12 +28,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
+import static cn.gson.crm.common.Constants.SESSION_VERIFY_CODE_KEY;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -43,6 +46,9 @@ public class AppController {
 
     @Autowired
     MemberDao memberDao;
+
+    @Autowired
+    RoleDao roleDao;
 
     @Autowired
     ResourceDao resourceDao;
@@ -160,6 +166,72 @@ public class AppController {
         session.setAttribute("isSuper", superUserId == member.getId());
         return "redirect:/";
     }
+
+    /**
+     * 注册
+     *
+     * @return
+     */
+    @RequestMapping(value = "/reg", method = RequestMethod.GET)
+    public String toReg() {
+        return "reg";
+    }
+
+    @RequestMapping(value = "/reg", method = RequestMethod.POST)
+    @Transactional
+    public String doReg(String realName, String userName, String password, String code, @SessionAttribute(SESSION_VERIFY_CODE_KEY) String verifyCode, RedirectAttributes attributes) {
+        if (isEmpty(code)) {
+            attributes.addFlashAttribute("error", "验证码不能为空！");
+        } else if (!code.equalsIgnoreCase(verifyCode)) {
+            attributes.addFlashAttribute("error", "验证码错误！");
+        } else if (isEmpty(realName)) {
+            attributes.addFlashAttribute("error", "姓名不能为空！");
+        } else if (isEmpty(userName)) {
+            attributes.addFlashAttribute("error", "账号不能为空！");
+        } else if (isEmpty(password)) {
+            attributes.addFlashAttribute("error", "密码不能为空！");
+        } else if (password.length() < 6) {
+            attributes.addFlashAttribute("error", "密码不能小于6位！");
+        } else if (memberDao.findByUserName(userName) != null) {
+            attributes.addFlashAttribute("error", "此账号已存在！");
+        }
+
+        if (attributes.getFlashAttributes().size() > 0) {
+            return "redirect:/reg";
+        } else {
+            Member member = new Member();
+            member.setRealName(realName);
+            member.setGender(Gender.BOY);
+            member.setUserName(userName);
+            member.setPassword(DigestUtils.sha256Hex(password));
+            member.setTelephone(userName);
+            member.setEmail(userName + "@qq.com");
+            member.setHiredate(new Date());
+            member.setStatus(true);
+            List<Role> roles = new ArrayList<>();
+            roles.add(roleDao.findOne(3l));
+            member.setRoles(roles);
+            memberDao.save(member);
+        }
+        return "redirect:/login";
+    }
+
+    /**
+     * 校验码
+     *
+     * @param response
+     * @param session
+     */
+    @RequestMapping(value = "/verify/code", method = RequestMethod.GET)
+    public void verifyCode(HttpServletResponse response, HttpSession session) {
+        try {
+            String code = VerifyCodeUtils.outputVerifyImage(150, 50, response.getOutputStream(), 4);
+            session.setAttribute(SESSION_VERIFY_CODE_KEY, code);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 首页

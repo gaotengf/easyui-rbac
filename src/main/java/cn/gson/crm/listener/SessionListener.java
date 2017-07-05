@@ -1,6 +1,12 @@
 package cn.gson.crm.listener;
 
+import cn.gson.crm.common.Constants;
+import cn.gson.crm.handler.WebSocketHandler;
+import cn.gson.crm.model.domain.Member;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -18,6 +24,9 @@ import javax.servlet.http.HttpSessionListener;
 @WebListener
 public class SessionListener implements HttpSessionListener {
 
+    @Autowired
+    WebSocketHandler webSocketHandler;
+
     @Override
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
         System.out.println(httpSessionEvent.getSession().getId());
@@ -25,6 +34,10 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-
+        HttpSession session = httpSessionEvent.getSession();
+        Member member = (Member) session.getAttribute(Constants.SESSION_MEMBER_KEY);
+        if (member != null) {
+            webSocketHandler.offLine(member.getId());
+        }
     }
 }
