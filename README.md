@@ -1,5 +1,3 @@
-**这个分支版本前端使用了requirejs进行模块化的js加载。**
-
 #起步
 
 基于JDK1.8哦。用了一些新特性，所以最好是使用最新版本的jdk
@@ -20,6 +18,10 @@ data.sql为初始化数据SQL脚本。
 #最后欢迎大家关注我的新论坛，多多支持
 `https://bbs.jeasyuicn.com/`
 
+另外一个分支，前端页面js采用了requirejs进行模块化加载，加载方式更合理。
+
+http://git.oschina.net/gson/easyui-rbac/tree/feature/senior/
+
 #### 案例在线演示：
 
 [案例在线演示](http://crud.jeasyuicn.com/)
@@ -30,4 +32,6 @@ data.sql为初始化数据SQL脚本。
 ![输入图片说明](https://git.oschina.net/uploads/images/2017/0629/172839_4dfed0a7_82.png "在这里输入图片标题")
 ![输入图片说明](https://git.oschina.net/uploads/images/2017/0629/172850_c9e792c7_82.png "在这里输入图片标题")
 ![输入图片说明](https://git.oschina.net/uploads/images/2017/0629/172858_0532ae19_82.png "在这里输入图片标题")
-![输入图片说明](https://git.oschina.net/uploads/images/2017/0705/120458_8655b1e8_82.jpeg "在这里输入图片标题")
+
+##### 权限逻辑
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0703/095959_d15a9894_82.jpeg "在这里输入图片标题")
