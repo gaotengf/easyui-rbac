@@ -150,7 +150,11 @@ public class AttachmentService {
         //判断存储路径是否已经存在，不存在则需要先创建出来
         File f = new File(getRootPath(), path);
         if (!f.exists()) {
-            f.mkdirs();
+            try {
+                FileUtils.forceMkdir(f);
+            } catch (IOException e) {
+                logger.error("创建存储目录失败！", e);
+            }
         }
 
         return path;
