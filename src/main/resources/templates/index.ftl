@@ -34,6 +34,7 @@
     var MEMBER = {
       id:${s_member.id},
       realName: '${s_member.realName}',
+      avatar: '${s_member.avatar}',
       userName: '${s_member.userName}'
     };
   </script>

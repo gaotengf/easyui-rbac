@@ -222,3 +222,11 @@ a:HOVER {
   vertical-align: middle;
   font-size: 28px;
 }
+
+.avatar-set {
+  border-radius: 50%;
+  border: 1px solid #f3f3f3;
+  margin-bottom: 20px;
+  height: 100px;
+  width: 100px;
+}

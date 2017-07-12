@@ -71,6 +71,35 @@ $(function () {
         }
       }]
     });
+
+    /**
+     * 上传头像
+     */
+    dialog.on('click', '#avatar-file', function () {
+      //清除上一轮已经选择的文件
+      this.value = "";
+    }).on('change', '#avatar-file', function () {
+      //上传头像，h5的搞法
+      var formData = new FormData();
+      formData.append('file', this.files.item(0));
+      formData.append('type', "AVATAR");
+      $.ajax("/attachment/upload", {
+        type: 'post',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        complete: function (res) {
+          var result = res.responseJSON;
+          if (result.success) {
+            $(".avatar-set", dialog).attr('src', result.data.filePath);
+            $("#member-avatar", dialog).val(result.data.filePath);
+          } else {
+            $.messager.alert("系统提示", result.message);
+          }
+        }
+      })
+    });
   });
 
   //修改密码

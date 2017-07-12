@@ -41,6 +41,9 @@ public class Member {
     @Column(length = 128)
     private String email;
 
+    @Column(length = 256)
+    private String avatar;
+
     /**
      * 入职时间
      */
@@ -136,6 +139,14 @@ public class Member {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     @Override

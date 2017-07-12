@@ -13,6 +13,7 @@ import cn.gson.crm.model.domain.Resource;
 import cn.gson.crm.model.domain.Role;
 import cn.gson.crm.model.enums.Gender;
 import cn.gson.crm.model.enums.ResourceType;
+import cn.gson.crm.service.AttachmentService;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,9 @@ public class AppController {
 
     @Autowired
     WebSocketHandler webSocketHandler;
+
+    @Autowired
+    AttachmentService attachmentService;
 
     /**
      * 超级管理员id
@@ -305,8 +309,8 @@ public class AppController {
     @RequestMapping(value = "/change/info", method = RequestMethod.POST)
     @Transactional
     @ResponseBody
-    public AjaxResult doChangeInfo(Member member, HttpSession session) {
-        Member smember = (Member) session.getAttribute("s_member");
+    public AjaxResult doChangeInfo(@SessionAttribute("s_member") Member smember,
+                                   Member member, HttpSession session) {
 
         if (isEmpty(member.getRealName()) || isEmpty(member.getTelephone()) || isEmpty(member.getEmail()) || member.getGender() == null) {
             return new AjaxResult(false).setMessage("参数错误！");
@@ -316,8 +320,12 @@ public class AppController {
         smember.setGender(member.getGender());
         smember.setTelephone(member.getTelephone());
         smember.setEmail(member.getEmail());
+        smember.setAvatar(member.getAvatar());
 
         memberDao.save(smember);
+
+        //清理工作
+        attachmentService.clearAvatar(smember);
 
         session.setAttribute("s_member", smember);
 
