@@ -1,7 +1,7 @@
-<form class="app-form" id="resouce-form">
+<form class="app-form" id="resource-form">
 	<input type="hidden" name="id">
 	<div class="field">
-        <select id="resouce-form-parent" value="${parentId!''}" name="parent" url="/system/resource/parent/tree" label="父资源：" style="width:100%"></select>
+      <select id="resource-form-parent" value="${parentId!''}" name="parent" url="/system/resource/parent/tree" label="父资源：" style="width:100%"></select>
     </div>
 	<div class="field">
         <input class="easyui-textbox" name="resName" style="width:100%" data-options="label:'资源名称：',required:true">
@@ -33,9 +33,9 @@
 </form>
 
 <script>
-	$("#resouce-form-parent").combotree(<#if resource??>{
+  $("#resource-form-parent").combotree(<#if resource??>{
 		onLoadSuccess:function(){
-			$("#resouce-form").form("load",${resource})
+          $("#resource-form").form("load",${resource})
 		}
 	}</#if>)
 </script>

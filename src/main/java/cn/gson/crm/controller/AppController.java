@@ -14,8 +14,10 @@ import cn.gson.crm.model.domain.Role;
 import cn.gson.crm.model.enums.Gender;
 import cn.gson.crm.model.enums.ResourceType;
 import cn.gson.crm.service.AttachmentService;
-import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -45,6 +47,8 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 @Controller
 @Transactional(readOnly = true)
 public class AppController {
+
+    Logger logger = Logger.getLogger(AppController.class);
 
     @Autowired
     MemberDao memberDao;
@@ -94,8 +98,13 @@ public class AppController {
      */
     @RequestMapping("/resource")
     public String login(HttpSession session, Model model) {
+        ObjectMapper mapper = new ObjectMapper();
         Object resourceKey = session.getAttribute("resourceKey");
-        model.addAttribute("resourceKey", JSONArray.toJSONString(resourceKey));
+        try {
+            model.addAttribute("resourceKey", mapper.writeValueAsString(resourceKey));
+        } catch (JsonProcessingException e) {
+            logger.error("json转换错误", e);
+        }
         return "resource";
     }
 

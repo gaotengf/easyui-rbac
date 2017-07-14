@@ -5,7 +5,8 @@ import cn.gson.crm.common.DataGrid;
 import cn.gson.crm.model.dao.ResourceDao;
 import cn.gson.crm.model.domain.Resource;
 import cn.gson.crm.service.ResourceService;
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,8 +55,13 @@ public class ResourceController {
     @RequestMapping("form")
     public void form(Long id, Model model) {
         if (id != null) {
+            ObjectMapper mapper = new ObjectMapper();
             Resource resource = resourceDao.findOne(id);
-            model.addAttribute("resource", JSONObject.toJSONString(resource));
+            try {
+                model.addAttribute("resource", mapper.writeValueAsString(resource));
+            } catch (JsonProcessingException e) {
+                logger.error("json转换错误", e);
+            }
             if (resource.getParent() != null) {
                 model.addAttribute("parentId", resource.getParent().getId());
             }

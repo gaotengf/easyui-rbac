@@ -1,160 +1,166 @@
 package cn.gson.crm.model.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import cn.gson.crm.model.enums.ResourceType;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cn.gson.crm.model.enums.ResourceType;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "crm_resource")
 public class Resource {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@JsonProperty(value = "_parentId")
-	@ManyToOne
-	private Resource parent;
+    @JsonProperty(value = "_parentId")
+    @ManyToOne
+    private Resource parent;
 
-	@JsonProperty("text")
-	@Column(length = 128, nullable = false)
-	private String resName;
+    @Column(length = 128, nullable = false)
+    private String resName;
 
-	@Column(length = 128, nullable = false, unique = true)
-	private String resKey;
+    @Column(length = 128, nullable = false, unique = true)
+    private String resKey;
 
-	// @Enumerated标识数据存储枚举值的名称
-	@Column(length = 20)
-	@Enumerated(EnumType.STRING)
-	private ResourceType resType;
+    // @Enumerated标识数据存储枚举值的名称
+    @Column(length = 20)
+    @Enumerated(EnumType.STRING)
+    private ResourceType resType;
 
-	@Column(length = 128)
-	private String menuUrl;
+    @Column(length = 128)
+    private String menuUrl;
 
-	@Column(length = 1024)
-	private String funUrls;
-	
-	private Integer weight = 0;
+    @Column(length = 1024)
+    private String funUrls;
 
-	private Boolean status = false;
+    private Integer weight = 0;
 
-	/**
-	 * 非持久化字段，可以使用@Transient标识
-	 */
-	@Transient
-	private List<Resource> children = new ArrayList<Resource>();
+    private Boolean status = false;
 
-	public Long getId() {
-		return id;
-	}
+    /**
+     * 非持久化字段，可以使用@Transient标识
+     */
+    @Transient
+    private List<Resource> children = new ArrayList<Resource>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Resource getParent() {
-		return parent;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setParent(Resource parent) {
-		this.parent = parent;
-	}
+    public Resource getParent() {
+        return parent;
+    }
 
-	public String getResName() {
-		return resName;
-	}
+    public void setParent(Resource parent) {
+        this.parent = parent;
+    }
 
-	public void setResName(String resName) {
-		this.resName = resName;
-	}
+    public String getResName() {
+        return resName;
+    }
 
-	public String getResKey() {
-		return resKey;
-	}
+    public void setResName(String resName) {
+        this.resName = resName;
+    }
 
-	public void setResKey(String resKey) {
-		this.resKey = resKey;
-	}
+    public String getResKey() {
+        return resKey;
+    }
 
-	public ResourceType getResType() {
-		return resType;
-	}
+    public void setResKey(String resKey) {
+        this.resKey = resKey;
+    }
 
-	public void setResType(ResourceType resType) {
-		this.resType = resType;
-	}
+    public ResourceType getResType() {
+        return resType;
+    }
 
-	public String getMenuUrl() {
-		return menuUrl;
-	}
+    public void setResType(ResourceType resType) {
+        this.resType = resType;
+    }
 
-	public void setMenuUrl(String menuUrl) {
-		this.menuUrl = menuUrl;
-	}
+    public String getMenuUrl() {
+        return menuUrl;
+    }
 
-	public String getFunUrls() {
-		return funUrls;
-	}
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
+    }
 
-	public void setFunUrls(String funUrls) {
-		this.funUrls = funUrls;
-	}
+    public String getFunUrls() {
+        return funUrls;
+    }
 
-	public Boolean getStatus() {
-		return status;
-	}
+    public void setFunUrls(String funUrls) {
+        this.funUrls = funUrls;
+    }
 
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
+    public Boolean getStatus() {
+        return status;
+    }
 
-	public List<Resource> getChildren() {
-		return children;
-	}
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
-	public void setChildren(List<Resource> children) {
-		this.children = children;
-	}
-	
-	public void setWeight(Integer weight) {
-		this.weight = weight;
-	}
-	
-	public Integer getWeight() {
-		return weight;
-	}
+    public List<Resource> getChildren() {
+        return children;
+    }
 
-	/**
-	 * 给JSON序列化时，获取ID
-	 * 
-	 * @return
-	 */
-	@JsonGetter("_parentId")
-	public Long getParentId() {
-		if (this.parent != null) {
-			return this.parent.getId();
-		}
-		return null;
-	}
+    public void setChildren(List<Resource> children) {
+        this.children = children;
+    }
 
-	@Override
-	public String toString() {
-		return "Resource [id=" + id + ", resName=" + resName + ", resKey=" + resKey + ", resType=" + resType
-				+ ", menuUrl=" + menuUrl + ", funUrls=" + funUrls + ", status=" + status + "]";
-	}
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    /**
+     * 给JSON序列化时，获取ID
+     *
+     * @return
+     */
+    @JsonGetter("_parentId")
+    public Long getParentId() {
+        if (this.parent != null) {
+            return this.parent.getId();
+        }
+        return null;
+    }
+
+    @JsonGetter("parent")
+    public Long getParentId2() {
+        if (this.parent != null) {
+            return this.parent.getId();
+        }
+        return null;
+    }
+
+    /**
+     * tree只认识text
+     *
+     * @return
+     */
+    @JsonGetter("text")
+    public String getText() {
+        return this.resName;
+    }
+
+    @Override
+    public String toString() {
+        return "Resource [id=" + id + ", resName=" + resName + ", resKey=" + resKey + ", resType=" + resType
+                + ", menuUrl=" + menuUrl + ", funUrls=" + funUrls + ", status=" + status + "]";
+    }
 }

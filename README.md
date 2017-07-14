@@ -18,10 +18,6 @@ data.sql为初始化数据SQL脚本。
 #最后欢迎大家关注我的新论坛，多多支持
 `https://bbs.jeasyuicn.com/`
 
-另外一个分支，前端页面js采用了requirejs进行模块化加载，加载方式更合理。
-
-http://git.oschina.net/gson/easyui-rbac/tree/feature/senior/
-
 #### 案例在线演示：
 
 [案例在线演示](http://crud.jeasyuicn.com/)

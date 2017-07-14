@@ -6,12 +6,12 @@ define(function () {
     dg.treegrid({
       fit: true,
       idField: 'id',
-      treeField: 'text',
+      treeField: 'resName',
       fitColumns: true,
       border: false,
       columns: [[
         {
-          field: 'text',
+          field: 'resName',
           title: '资源名称',
           width: 80
         },
@@ -110,7 +110,7 @@ define(function () {
         },
         onLoad: function () {
           //窗口表单加载成功时执行
-          form = $("#resouce-form");
+          form = $("#resource-form");
 
         },
         buttons: [{

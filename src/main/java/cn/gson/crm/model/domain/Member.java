@@ -1,7 +1,7 @@
 package cn.gson.crm.model.domain;
 
 import cn.gson.crm.model.enums.Gender;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -47,7 +47,7 @@ public class Member {
     /**
      * 入职时间
      */
-    @JSONField(format = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date hiredate;
 
     private Boolean status = false;

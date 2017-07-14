@@ -1,6 +1,7 @@
 package cn.gson.crm.common;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
 
 /**
@@ -30,7 +31,13 @@ public class SocketMessage {
      * @return
      */
     public TextMessage toTextMessage() {
-        return new TextMessage(JSON.toJSONString(this));
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return new TextMessage(mapper.writeValueAsString(this));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setTag(String tag) {

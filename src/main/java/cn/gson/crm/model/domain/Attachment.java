@@ -1,7 +1,6 @@
 package cn.gson.crm.model.domain;
 
 import cn.gson.crm.common.AttachmentType;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -72,7 +71,6 @@ public class Attachment {
      * 非持久化字段，不需要存储到数据库,也不做json的序列化
      */
     @Transient
-    @JSONField(serialize = false)
     @JsonIgnore
     private File file;
 

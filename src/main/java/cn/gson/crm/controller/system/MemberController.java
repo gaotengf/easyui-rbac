@@ -6,7 +6,8 @@ import cn.gson.crm.model.dao.MemberDao;
 import cn.gson.crm.model.dao.RoleDao;
 import cn.gson.crm.model.domain.Member;
 import cn.gson.crm.model.domain.Role;
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,8 +86,13 @@ public class MemberController {
     @RequestMapping("/form")
     public void form(Long id, Model model) {
         if (id != null) {
+            ObjectMapper mapper = new ObjectMapper();
             Member member = memberDao.findOne(id);
-            model.addAttribute("member", JSONObject.toJSONString(member));
+            try {
+                model.addAttribute("member", mapper.writeValueAsString(member));
+            } catch (JsonProcessingException e) {
+                logger.error("json转换错误", e);
+            }
         }
     }
 
